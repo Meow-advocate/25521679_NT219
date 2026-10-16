@@ -1,0 +1,9 @@
+build*/
+*.zip
+*.exe
+*.dll
+*.a
+*.o
+*.class
+.vscode/
+__pycache__/

@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="../build-gcc/aes_c_api.dll" Link="aes_c_api.dll" CopyToOutputDirectory="PreserveNewest" Condition="Exists('../build-gcc/aes_c_api.dll')" />
+  </ItemGroup>
+</Project>
