@@ -1,3 +1,4 @@
+<!-- Cấu hình chương trình C# sử dụng P/Invoke để thử thư viện C++ AES. -->
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>

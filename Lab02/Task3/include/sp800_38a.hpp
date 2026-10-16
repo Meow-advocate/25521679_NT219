@@ -1,3 +1,7 @@
+/*
+ * Chức năng: Khai báo ECB, CBC, CFB8, CFB128, OFB, CTR. Các hàm dùng chung lõi AES ở aes.hpp và nhận dữ liệu dạng dãy byte.
+ * File này khai báo giao diện; phần triển khai tương ứng nằm trong thư mục src/.
+ */
 #pragma once
 #include "aes.hpp"
 namespace nist {

@@ -1,3 +1,7 @@
+/*
+ * Chức năng: Khai báo Key Wrap (KW) và Key Wrap with Padding (KWP) để bảo vệ khóa mật mã.
+ * File này khai báo giao diện; phần triển khai tương ứng nằm trong thư mục src/.
+ */
 #pragma once
 #include "aes.hpp"
 namespace nist {

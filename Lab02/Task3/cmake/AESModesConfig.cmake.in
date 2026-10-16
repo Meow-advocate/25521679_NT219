@@ -1,3 +1,5 @@
+# Mẫu cấu hình package CMake khi cài đặt thư viện AES.
+# Nạp các target đã export để dự án khác có thể liên kết thư viện.
 @PACKAGE_INIT@
 include("${CMAKE_CURRENT_LIST_DIR}/AESModesTargets.cmake")
 check_required_components(AESModes)

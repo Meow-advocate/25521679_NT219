@@ -1,3 +1,7 @@
+/*
+ * Giao diện ABI kiểu C dùng để gọi lõi AES C++ từ Python, Java và C#.
+ * Các kiểu tham số được lựa chọn để tránh truyền trực tiếp đối tượng C++ qua ranh giới ngôn ngữ.
+ */
 #pragma once
 #include <stdint.h>
 

@@ -1,3 +1,6 @@
+# Cấu hình biên dịch AES bằng CMake.
+# Các tùy chọn cho phép tạo thư viện tĩnh, thư viện động và chương trình kiểm thử.
+# CTest dùng để tự động kiểm tra kết quả sau khi xây dựng chương trình.
 cmake_minimum_required(VERSION 3.16)
 project(AESModesLab VERSION 3.0.0 LANGUAGES CXX)
 

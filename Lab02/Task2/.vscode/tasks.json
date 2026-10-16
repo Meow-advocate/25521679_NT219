@@ -1,0 +1,36 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "NT219 Task2: CMake configure (UCRT64)",
+      "type": "shell",
+      "command": "cmake",
+      "args": [
+        "-S", ".", "-B", "build",
+        "-G", "MinGW Makefiles",
+        "-DCMAKE_CXX_COMPILER=C:/msys64/ucrt64/bin/g++.exe",
+        "-DAES_LIBRARY_TYPE=BOTH"
+      ],
+      "options": { "cwd": "${workspaceFolder}" },
+      "problemMatcher": []
+    },
+    {
+      "label": "NT219 Task2: Build CMake",
+      "type": "shell",
+      "command": "cmake",
+      "args": ["--build", "build", "--parallel", "4"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "dependsOn": "NT219 Task2: CMake configure (UCRT64)",
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": ["$gcc"]
+    },
+    {
+      "label": "NT219 Task2: Test 18 vectors",
+      "type": "shell",
+      "command": "${workspaceFolder}\\build\\aes_tests.exe",
+      "options": { "cwd": "${workspaceFolder}" },
+      "dependsOn": "NT219 Task2: Build CMake",
+      "problemMatcher": []
+    }
+  ]
+}
