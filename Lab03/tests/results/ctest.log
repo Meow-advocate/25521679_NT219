@@ -1,0 +1,87 @@
+Start testing: Oct 31 23:25 SE Asia Standard Time
+----------------------------------------------------------
+1/2 Testing: public_api
+1/2 Test: public_api
+Command: "C:/Users/ACER/Documents/ChatGPT/Project/Lab03_Submission/Lab02/build/api_checks.exe"
+Directory: C:/Users/ACER/Documents/ChatGPT/Project/Lab03_Submission/Lab02/build
+"public_api" start time: Oct 31 23:25 SE Asia Standard Time
+Output:
+----------------------------------------------------------
+PASS public math, encoding and KEM APIs
+<end of output>
+Test time =   0.68 sec
+----------------------------------------------------------
+Test Passed.
+"public_api" end time: Oct 31 23:25 SE Asia Standard Time
+"public_api" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/2 Testing: acceptance
+2/2 Test: acceptance
+Command: "C:/Users/ACER/.cache/codex-runtimes/codex-primary-runtime/dependencies/python/python.exe" "C:/Users/ACER/Documents/ChatGPT/Project/Lab03_Submission/Lab02/tests/run_all.py" "--exe" "C:/Users/ACER/Documents/ChatGPT/Project/Lab03_Submission/Lab02/build/lab02.exe" "--openssl" "D:/cryptolibrary/openssl-4.1.0-beta1/gcc/bin/openssl.exe"
+Directory: C:/Users/ACER/Documents/ChatGPT/Project/Lab03_Submission/Lab02/build
+"acceptance" start time: Oct 31 23:25 SE Asia Standard Time
+Output:
+----------------------------------------------------------
+[PASS] BUILD-version
+[PASS] A-T1
+[PASS] A-T2
+[PASS] A-T3
+[PASS] A-T4
+[PASS] A-T5
+[PASS] A-T6
+[PASS] A-T7
+[PASS] A-T8
+[PASS] A-T9
+[PASS] B-T1
+[PASS] B-T2
+[PASS] B-T3
+[PASS] B-T4
+[PASS] B-T5
+[PASS] B-T6
+[PASS] B-T7
+[PASS] C-T1
+[PASS] C-T2
+[PASS] C-T3
+[PASS] C-T4
+[PASS] C-T5
+[PASS] C-T6
+[PASS] C-T7
+[PASS] C-T8
+[PASS] C-T9
+[PASS] C-T10
+[PASS] C-T11
+[PASS] D-T1
+[PASS] D-T2
+[PASS] D-T3
+[PASS] D-T4
+[PASS] D-T5
+[PASS] D-T6
+[PASS] D-T7
+[PASS] D-T8
+[PASS] D-T9
+[PASS] D-T10
+[PASS] D-INTEROP-REFERENCE
+[PASS] E-SELFTEST
+[PASS] E-T1
+[PASS] E-T2
+[PASS] E-T3
+[PASS] E-T4
+[PASS] E-T5
+[PASS] E-T6
+[PASS] E-T7
+[PASS] E-T8
+[PASS] E-T9
+[PASS] EXTRA-output-safety
+[PASS] EXTRA-independent-bigint-properties
+[PASS] EXTRA-parser-regressions
+502 assertions; 0 failed groups; D-T11 revalidation omitted by request; original manual evidence retained.
+<end of output>
+Test time =  20.23 sec
+----------------------------------------------------------
+Test Passed.
+"acceptance" end time: Oct 31 23:25 SE Asia Standard Time
+"acceptance" time elapsed: 00:00:20
+----------------------------------------------------------
+
+End testing: Oct 31 23:25 SE Asia Standard Time
