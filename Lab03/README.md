@@ -1,39 +1,58 @@
-# Lab03 CLI — Task A–E
+# Lab03 — Task A–E
 
-Mã nguồn được phát triển từ năm tệp C++ trong bản ZIP người học cung cấp. Bản này bổ sung thư viện `labcore`, header công khai, đọc khóa dùng chung, phân loại lỗi, bảo vệ bộ đệm bí mật và bộ kiểm thử độc lập. Không nhập mã C++ mẫu từ hai PDF của giảng viên. Tên lệnh, định dạng byte, nhãn KDF và vector kiểm thử giữ đúng đặc tả; đó là yêu cầu tương thích, không phải mã nguồn sao chép.
+Bài thực hành gồm năm phần: số học modulo với BIGNUM (Task A), tham số và khóa RSA (Task B), OS2IP/I2OSP và RSA-OAEP (Task C), mã hóa tệp lai RSA-OAEP/AES-256-GCM (Task D), và RSASVE/HKDF/AES-256-GCM (Task E). Các chức năng được gọi từ chương trình dòng lệnh `lab03`.
 
-## Môi trường đã kiểm tra
+Repository: https://github.com/Meow-advocate/25521679_NT219/tree/main/Lab03
 
-- Windows x64; GCC/MinGW-w64 15.2.0; C++17.
-- OpenSSL 4.1.0-beta1, build ngày 23 Sep 2026, liên kết `libcrypto` tĩnh trong lần kiểm tra này.
-- CMake >= 3.20; Python 3.12.14; cryptography 50.0.2 cho kiểm chứng độc lập định dạng Task D.
-- Cờ biên dịch: `-Wall -Wextra -Wpedantic`; bản Release đã build sạch không có cảnh báo.
-- Nguồn yêu cầu OpenSSL >= 3.0 có provider RSA/RSASVE/HKDF. Chưa xác nhận chạy trên mọi phiên bản OpenSSL hay hệ điều hành khác.
+## Cấu trúc thư mục
 
-## Build
+| Thư mục hoặc tệp | Nội dung |
+|---|---|
+| `src/main.cpp` | Nhận lệnh và chuyển tới chức năng tương ứng. |
+| `src/task_a.cpp` | Các phép toán với số nguyên lớn và xử lý đầu vào của Task A. |
+| `src/task_b.cpp` | Tham số RSA, tạo/đọc/chuyển đổi/kiểm tra khóa. |
+| `src/task_c.cpp` | Chuyển đổi giữa byte và số nguyên, thí nghiệm RSA và OAEP. |
+| `src/task_d.cpp` | Mã hóa, giải mã tệp bằng phương pháp lai và kiểm tra xác thực. |
+| `src/task_e.cpp` | KEM, dẫn xuất khóa và mã hóa/giải mã tệp của Task E. |
+| `include/` | Các header công khai dùng để khai báo hàm, kiểu dữ liệu và giao diện giữa các phần. |
+| `tests/` | Bộ kiểm thử chấp nhận, kiểm thử giao diện và script thay đổi byte của gói tin. |
+| `tests/results/` | Log và kết quả kiểm thử đã ghi lại. |
+| `keys/` | Bộ khóa được sinh riêng phục vụ thực hành và kiểm thử. |
+| `samples/` | Tệp dữ liệu mẫu dùng khi chạy thử lệnh. |
+| `cli_demo/` | Tệp minh họa chạy CLI và kết quả khôi phục. |
+| `docs/` | Tệp đối chiếu và kiểm tra tính toàn vẹn đi kèm dự án. |
+| `CMakeLists.txt` | Cấu hình biên dịch và khai báo các bài kiểm thử. |
+| `build_windows.ps1` | Script biên dịch trên Windows. |
+| `.gitignore` | Loại trừ kết quả build và tệp tạm khỏi Git. |
+| `25521679.Lab03_TASK(A,B,C,D,E).pdf` | Báo cáo và hình ảnh thực hiện của năm Task. |
 
-Thêm `g++`, `cmake`, `mingw32-make` và `openssl` vào PATH. Trên Windows PowerShell:
+## Môi trường thực hiện
+
+- Windows x64; GCC/MinGW-w64 15.2.0; ngôn ngữ C++17.
+- CMake 3.20 trở lên; Python 3.12.14 để chạy các bài kiểm thử.
+- Tùy chọn biên dịch: `-Wall -Wextra -Wpedantic`.
+
+## Biên dịch
+
+Mở PowerShell tại thư mục `Lab03`, bảo đảm `g++`, `cmake` và `mingw32-make` có trong `PATH`.
 
 ```powershell
-cmake -S . -B build -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release -DOPENSSL_ROOT_DIR="D:/cryptolibrary/openssl-4.1.0-beta1/gcc" -DOPENSSL_USE_STATIC_LIBS=TRUE
-cmake --build build --parallel 4
-.\build\lab03.exe version
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass -Force
+.\build_windows.ps1
+.\build\lab03.exe help
 ```
 
-Nếu máy có nhiều bộ GCC, truyền thêm `-DCMAKE_CXX_COMPILER=C:/msys64/mingw64/bin/g++.exe`. `mingw32-make` cũng phải nằm trong PATH, hoặc truyền đường dẫn qua `-DCMAKE_MAKE_PROGRAM=...`. Đường dẫn OpenSSL ở trên là môi trường đã dùng, cần thay theo máy chấm.
+Cấu hình build bằng CMake trên Linux:
 
-Linux/macOS (chưa chạy trong lần kiểm tra này):
-
-```sh
+```bash
 cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 cmake --build build -j4
+./build/lab03 help
 ```
 
-Kiểm thử cần `python -m pip install cryptography`; khi có nhiều Python, truyền `-DPython3_EXECUTABLE=...` vào lệnh CMake. Không cần Python để chạy chương trình CLI đã biên dịch.
+## Ví dụ các lệnh
 
-## Ví dụ cho từng lệnh
-
-Chạy tại gốc project. Thay `lab03` bằng `.\build\lab03.exe` trên Windows hoặc `./build/lab03` trên POSIX.
+Chạy các ví dụ tại thư mục gốc dự án. Trong bảng dưới đây, `lab03` tương ứng với `.\build\lab03.exe` trên Windows hoặc `./build/lab03` trên Linux.
 
 | Lệnh | Ví dụ |
 |---|---|
@@ -62,36 +81,47 @@ Chạy tại gốc project. Thay `lab03` bằng `.\build\lab03.exe` trên Window
 | task-c-all | `lab03 task-c-all` |
 | task-d-all | `lab03 task-d-all` |
 
-Các lệnh số học hỗ trợ `--hex`. `key-convert` hỗ trợ `--inform PEM|DER`. `rsa-params --show-private` chỉ hiển thị tham số của khóa học thuật <=1024 bit. Mọi lệnh bảo mật yêu cầu RSA >=2048 bit. `--force` chỉ dùng khi chủ động thay thế kết quả; không dùng chung đường dẫn đầu vào và đầu ra.
+Các lệnh số học hỗ trợ `--hex`; `key-convert` hỗ trợ `--inform PEM|DER`. Đối với `rsa-params`, tùy chọn `--show-private` chỉ dùng với khóa học thuật tối đa 1024 bit. Các lệnh mã hóa tệp yêu cầu khóa RSA từ 2048 bit. Cờ `--force` cho phép ghi đè tệp kết quả khi cần.
 
-## Kiểm thử
+## Chạy kiểm thử
+
+Sau khi biên dịch:
 
 ```powershell
 ctest --test-dir build --output-on-failure
-# Hoặc
-python tests/run_all.py --exe build/lab03.exe --openssl openssl
-# Hoặc
-.\tests\run_all.ps1 -Python python -OpenSSL openssl
+.\tests\run_all.ps1
 ```
 
-POSIX: `sh tests/run_all --exe build/lab03 --openssl openssl`.
+Hoặc chạy bộ kiểm thử bằng Python:
 
-- `tests/results/summary.json`: kết quả từng nhóm, số kiểm tra và thời gian.
-- `tests/results/run_all.log`: lệnh, stdout, stderr và mã thoát thực tế; không ghi bí mật chung hay khóa AES.
-- `tests/results/ctest.log`: hai bài kiểm thử CTest.
-- `tests/tamper.py input.l2pk output.l2pk 0x19e --xor 1`: sửa một byte trên bản sao; không ghi đè bản gốc.
-- Bộ test dùng Python số nguyên lớn để kiểm tra độc lập Task A; dùng OpenSSL CLI và Python AESGCM để kiểm chứng hai chiều định dạng Task D. Tệp đầu vào gồm rỗng, UTF-8, PDF, ZIP, PNG và nhị phân 50 MiB.
-- KEM selftest kiểm tra EVP 100 vòng, trao đổi EVP/edu hai chiều, RFC 5869 KAT và đổi nhãn KDF. Test ngoài CLI kiểm tra PEM/DER, parser và trường hợp sửa dữ liệu.
-- D-T11: theo yêu cầu người học, không kiểm chứng lại với nhóm Hà. Ảnh trao đổi thủ công có sẵn được giữ trong báo cáo; kết quả này được ghi `SKIPPED-USER-REQUEST`, không tính thành test tự động PASS. Kiểm chứng OpenSSL độc lập có nhãn riêng `D-INTEROP-REFERENCE`.
+```powershell
+python tests/run_all.py --exe build/lab03.exe
+```
 
-## Cấu trúc và giới hạn
+Trên Linux:
 
-`src/main.cpp` chỉ điều phối lệnh; các hàm xử lý nằm trong `labcore`. `include/bn_math.hpp`, `rsa_params.hpp`, `rsa_encoding.hpp`, `key_io.hpp`, `rsa_kem.hpp`, `ossl_raii.hpp`, `task_cli.hpp` là các interface của bản triển khai này. Task C dùng RSA không đệm trong nhánh học thuật; `encrypt`, `decrypt`, `kem-encrypt`, `kem-decrypt` không gọi RSA học thuật. D/E dùng cùng loader SPKI/PKCS#8 của Task B.
+```bash
+sh tests/run_all --exe build/lab03
+```
 
-Giới hạn số nguyên thập phân: 10000 chữ số; OS2IP/I2OSP: 1024 byte; khóa đầu vào: 1 MiB; tệp D/E: 1 GiB; xử lý theo khối 64 KiB. Header L2PK được đưa trọn vẹn vào AAD. Bản rõ tạm được ghi vào `<out>.part`, chỉ đổi tên sau khi tag hợp lệ; lỗi xóa tệp tạm và giữ nguyên kết quả cũ. Lỗi OAEP/GCM chung là `decryption failed`, exit 4.
+Các tệp kết quả được ghi tại `tests/results/`:
 
-Task E dùng profile `LAB02-RSASVE-HKDF-SHA256-AES256GCM-v1`, không tuyên bố là RSA-KEM RFC 9690. `key_id` sai trả exit 4 và thông báo chung; lỗi cấu trúc/ciphertext ngoài miền trả exit 3. Mã thoát: 0 thành công, 1 cú pháp/đầu vào, 2 I/O, 3 định dạng, 4 mật mã, 5 nội bộ.
+- `summary.json`: kết quả của từng nhóm kiểm thử.
+- `run_all.log`: lệnh thực hiện, dữ liệu đầu ra và mã thoát.
 
-Khóa trong `keys/` chỉ phục vụ chấm bài và được chương trình sinh trong lần chạy bộ test. PKCS#8 không mã hóa không dùng cho hệ thống thực. POSIX tạo tệp khóa riêng 0600. Windows dùng ACL kế thừa của thư mục; bản CLI không tự thay đổi DACL. Chạy trong thư mục chỉ tài khoản hiện tại được truy cập; có thể dùng `icacls` để kiểm tra quyền. Không dùng khóa cá nhân/khóa triển khai thật với bộ test.
+`tests/tamper.py` tạo bản sao của gói tin và thay đổi một byte tại vị trí được chỉ định, ví dụ:
 
-Báo cáo đi kèm giữ nguyên các ảnh và khối code thực hành ban đầu; phần CLI sau Task E và kết quả trong ZIP tương ứng bản tích hợp cuối. Các thay đổi mã giữa bản thực hành và bản CLI được ghi trong `docs/CHANGES.md`.
+```bash
+python tests/tamper.py input.l2pk output.l2pk 0x19e --xor 1
+```
+
+Các bài kiểm thử gồm phép toán số nguyên lớn, đọc khóa PEM/DER, mã hóa/giải mã vòng, dữ liệu rỗng và nhị phân, thay đổi header/ciphertext/tag, sai khóa và kiểm tra file đầu ra. Phép thử D-T11 là trao đổi thực tế với nhóm khác; hình ảnh minh chứng được trình bày trong báo cáo, không tính là phép thử tự động.
+
+## Quy ước và lưu ý
+
+- Task A–C phục vụ nghiên cứu các phép toán và tính chất của RSA; Task D–E dùng những giao diện mã hóa dành cho tệp.
+- Tệp D/E có giới hạn 1 GiB và xử lý theo khối 64 KiB. Header của gói `L2PK` được đưa vào dữ liệu xác thực (AAD).
+- Khi giải mã, kết quả được ghi vào tệp `.part`. Chỉ sau khi kiểm tra tag thành công chương trình mới đổi tên tệp; nếu thất bại, tệp tạm bị xóa.
+- Task E sử dụng profile `LAB02-RSASVE-HKDF-SHA256-AES256GCM-v1`, với `key_id` gắn khóa dẫn xuất với khóa người nhận.
+- Mã thoát: `0` thành công; `1` đầu vào; `2` I/O; `3` định dạng; `4` xác thực/mật mã; `5` lỗi nội bộ.
+- Bộ khóa trong `keys/` chỉ dùng cho bài thực hành và kiểm thử. Không sử dụng khóa cá nhân hoặc khóa đang triển khai thực tế.
