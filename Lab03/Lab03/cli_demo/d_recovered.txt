@@ -1,1 +1,0 @@
-Lab 03 - Kiểm thử CLI với văn bản tiếng Việt.
